@@ -44,11 +44,15 @@ pipeline {
                 }
                 stage("SonarQube") {
                     steps {
-                        sh """
+                        withSonarQubeEnv('sonarqube') {
+                            sh """
                         mvn sonar:sonar -Dsonar.projectKey=proyectoMaven \
                         -Dsonar.host.url=http://172.31.11.165:8081 \
                         -Dsonar.login=99ac600688b8f1a2c9ad87607a27882ee9b09df0
                         """
+                        }
+                        
+                        waitForQualityGate false
                     }    
                 }
             }
